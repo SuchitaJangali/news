@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:provider/provider.dart';
 // import 'providers/news_provider.dart';
 // import 'screens/news_list_screen.dart';
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => NewsProvider()),
+        // ChangeNotifierProvider(create: (_) => NewsProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
