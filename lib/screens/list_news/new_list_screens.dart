@@ -4,6 +4,9 @@ import 'package:news/uitils/base_app_notifer.dart' show NotifierState;
 import 'package:provider/provider.dart';
 
 class NewsListScreen extends StatelessWidget {
+  static String route="NewsListScreen";
+  const NewsListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final newsProvider = Provider.of<NewsProvider>(context);
