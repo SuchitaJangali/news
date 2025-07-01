@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:news/model/news_article.dart';
+import 'package:news/screens/detail_news/detail_news_screen.dart';
 import 'package:news/screens/home_screen/home_screen.dart';
-import 'package:news/screens/list_news/new_list_screens.dart';
-import 'package:news/screens/list_news/new_list_view_model.dart';
+import 'package:news/screens/home_screen/list_news/new_list_view_model.dart';
 import 'package:provider/provider.dart';
-// import 'package:provider/provider.dart';
-// import 'providers/news_provider.dart';
-// import 'screens/news_list_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,9 +19,28 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NewsProvider()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: NewsHomePage(),
-      ),
+          debugShowCheckedModeBanner: false,
+          home: NewsHomePage(),
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case '/':
+                return MaterialPageRoute(builder: (_) => NewsHomePage());
+
+              case NewsDetailScreen.route:
+                final data = settings.arguments as NewsArticle;
+                return MaterialPageRoute(
+                    builder: (_) => NewsDetailScreen(
+                          article: data,
+                        ));
+
+              default:
+                return MaterialPageRoute(
+                  builder: (_) => Scaffold(
+                    body: Center(child: Text('404 - Page not found')),
+                  ),
+                );
+            }
+          }),
     );
   }
 }

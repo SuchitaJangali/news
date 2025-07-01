@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news/screens/list_news/new_list_screens.dart';
-import 'package:news/screens/list_news/new_list_view_model.dart';
+import 'package:intl/intl.dart';
+import 'package:news/screens/home_screen/list_news/new_list_screens.dart';
+import 'package:news/screens/home_screen/list_news/new_list_view_model.dart';
 import 'package:news/uitils/base_app_notifer.dart';
 import 'package:provider/provider.dart';
 
-class NewsHomePage extends StatelessWidget {
+class NewsHomePage extends StatefulWidget {
   const NewsHomePage({super.key});
+
+  @override
+  State<NewsHomePage> createState() => _NewsHomePageState();
+}
+
+class _NewsHomePageState extends State<NewsHomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timestamp) {
+      context.read<NewsProvider>().fetchNews();
+    });
+  }
+
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(32.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,18 +43,21 @@ class NewsHomePage extends StatelessWidget {
                     Text(
                       'NEWS',
                       style: GoogleFonts.poppins(
-                        fontSize: 24,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      '11 July, 2020',
+                      DateFormat('dd MMM yyyy')
+                              .format(DateTime.now())
+                              .toString() ??
+                          '11 July, 2020',
                       style: GoogleFonts.poppins(
                           fontSize: 14, color: Colors.grey[600]),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
 
                 Text(
                   'Hey, James!',
@@ -46,76 +66,115 @@ class NewsHomePage extends StatelessWidget {
                 Text(
                   'Discover Latest News',
                   style: GoogleFonts.poppins(
-                      fontSize: 22, fontWeight: FontWeight.bold),
+                      fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 
-                // Search Bar
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Icon(Icons.search, color: Colors.grey),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Search For News',
-                            border: InputBorder.none,
+                Consumer<NewsProvider>(builder: (context, view, child) {
+                  print("Object ${view.selectedCategory}");
+                  return // Search Bar
+                      Column(children: [
+                    Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Search For News',
+                                border: InputBorder.none,
+                              ),
+                              controller: searchController,
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.send, color: Colors.red),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
+                        const SizedBox(width: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.search,
+                            ),
+                            onPressed: () {
+                              if (searchController.text.trim().isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Please Enter Something!'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                                return;
+                              }
+                              FocusScope.of(context).unfocus();
+                              view.fetchNews(query: searchController.text);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
 
-                // Categories
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    CategoryIcon(
-                      title: 'Politics',
-                      icon: Icons.mic,
-                      onTap: (String query) {
-                        print("q: $query");
-                        context.read<NewsProvider>().fetchNews(query: query);
-                      },
-                    ),
-                    CategoryIcon(
-                      title: 'Movies',
-                      icon: Icons.movie,
-                      onTap: (String query) {
-                        print("q: $query");
-                        context.read<NewsProvider>().fetchNews(query: query);
-                      },
-                    ),
-                    CategoryIcon(
-                      title: 'Sports',
-                      icon: Icons.sports,
-                      onTap: (String query) {
-                        print("q: $query");
-                        context.read<NewsProvider>().fetchNews(query: query);
-                      },
-                    ),
-                    CategoryIcon(
-                      title: 'Crime',
-                      icon: Icons.gavel,
-                      onTap: (String query) {
-                        print("q: $query");
-                        context.read<NewsProvider>().fetchNews(query: query);
-                      },
-                    ),
-                  ],
-                ),
+                    // Categories
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CategoryIcon(
+                            title: 'Politics',
+                            icon: Icons.mic,
+                            onTap: (String query) {
+                              print("q: $query");
+                              view.selectedCategory = query;
+                              context
+                                  .read<NewsProvider>()
+                                  .fetchNews(query: query);
+                            },
+                          ),
+                          CategoryIcon(
+                            title: 'Movies',
+                            icon: Icons.movie,
+                            onTap: (String query) {
+                              print("q: $query");
+                              view.selectedCategory = query;
+                              context
+                                  .read<NewsProvider>()
+                                  .fetchNews(query: query);
+                            },
+                          ),
+                          CategoryIcon(
+                            title: 'Sports',
+                            icon: Icons.sports,
+                            onTap: (String query) {
+                              print("q: $query");
+                              view.selectedCategory = query;
+                              context
+                                  .read<NewsProvider>()
+                                  .fetchNews(query: query);
+                            },
+                          ),
+                          CategoryIcon(
+                            title: 'Crime',
+                            icon: Icons.gavel,
+                            onTap: (String query) {
+                              print("q: $query");
+                              view.selectedCategory = query;
+                              context
+                                  .read<NewsProvider>()
+                                  .fetchNews(query: query);
+                            },
+                          ),
+                        ]),
+                  ]);
+                }),
                 const SizedBox(height: 20),
 
                 Consumer<NewsProvider>(builder: (context, newsProvider, child) {
@@ -129,12 +188,19 @@ class NewsHomePage extends StatelessWidget {
                       child: Text(newsProvider.errorMessage ?? "Error"),
                     );
                   }
+                  if (newsProvider.articles.isEmpty) {
+                    return Center(
+                      child: Text(
+                          "No News in Category ${newsProvider.selectedCategory}"),
+                    );
+                  }
 
                   return ListView.builder(
                       itemCount: newsProvider.articles.length,
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      // scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(bottom: 16),
+                      scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {
                         return Article(
                           article: newsProvider.articles[index],
@@ -164,7 +230,9 @@ class CategoryIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    bool isSelected = context.read<NewsProvider>().selectedCategory == title;
+    print("$title is Selected $isSelected");
+    return InkWell(
       onTap: () {
         onTap(title);
       },
@@ -172,8 +240,9 @@ class CategoryIcon extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundColor: Colors.red[100],
-            child: Icon(icon, color: Colors.red),
+            backgroundColor:
+                isSelected ? Colors.red[100] : Colors.grey.withOpacity(0.5),
+            child: Icon(icon, color: isSelected ? Colors.red : Colors.black),
           ),
           const SizedBox(height: 8),
           Text(
@@ -182,59 +251,6 @@ class CategoryIcon extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class NewsItem extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String time;
-
-  const NewsItem({
-    super.key,
-    required this.imageUrl,
-    required this.title,
-    required this.time,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            imageUrl,
-            width: 80,
-            height: 80,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                time,
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

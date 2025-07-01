@@ -32,6 +32,7 @@ INJECTED from D:\suchita\News\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from D:\suchita\News\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 MERGED from [:path_provider_android] D:\suchita\News\build\path_provider_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:share_plus] D:\suchita\News\build\share_plus\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-35:12
+MERGED from [:sqflite_android] D:\suchita\News\build\sqflite_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
 MERGED from [:url_launcher_android] D:\suchita\News\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-14:12
 MERGED from [androidx.browser:browser:1.8.0] C:\Users\Suchita\.gradle\caches\8.10.2\transforms\5870f29bca51ebd23f00e720f39b68c5\transformed\browser-1.8.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.window:window:1.2.0] C:\Users\Suchita\.gradle\caches\8.10.2\transforms\a19e0c72e85c0e4296dfa7f4a24f2874\transformed\jetified-window-1.2.0\AndroidManifest.xml:17:1-31:12
@@ -92,6 +93,8 @@ MERGED from [:path_provider_android] D:\suchita\News\build\path_provider_android
 MERGED from [:path_provider_android] D:\suchita\News\build\path_provider_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:share_plus] D:\suchita\News\build\share_plus\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:share_plus] D:\suchita\News\build\share_plus\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:sqflite_android] D:\suchita\News\build\sqflite_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:sqflite_android] D:\suchita\News\build\sqflite_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] D:\suchita\News\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [:url_launcher_android] D:\suchita\News\build\url_launcher_android\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
 MERGED from [androidx.browser:browser:1.8.0] C:\Users\Suchita\.gradle\caches\8.10.2\transforms\5870f29bca51ebd23f00e720f39b68c5\transformed\browser-1.8.0\AndroidManifest.xml:5:5-44
