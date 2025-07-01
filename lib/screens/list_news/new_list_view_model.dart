@@ -9,18 +9,19 @@ class NewsProvider extends BaseAppNotifier {
   List<NewsArticle> _articles = [];
   List<NewsArticle> get articles => _articles;
 
-  Future<void> fetchNews({String query = 'flutter'}) async {
+  Future<void> fetchNews({String query=""}) async {
     state=NotifierState.loading;
-
+print("String $query");
     try {
       final response = await _apiService.get(
-        'everything',
-        queryParams: {
-          'q': query,
-          'apiKey': 'YOUR_API_KEY',  // Replace with your API key
-        },
+        'everything?q=$query&sortBy=publishedAt&apiKey=cad6037116e04d5b8494123ede421ef0',
+        // queryParams: {
+        //   'q': query,
+        //   'apiKey': 'cad6037116e04d5b8494123ede421ef0',  // Replace with your API key
+        // },
       );
 
+      print(" response['articles']${ response['articles']}");
       final List<dynamic> articlesJson = response['articles'] ?? [];
 
       _articles = articlesJson

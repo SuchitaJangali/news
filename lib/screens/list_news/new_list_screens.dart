@@ -1,40 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:news/screens/list_news/new_list_view_model.dart' show NewsProvider;
+import 'package:google_fonts/google_fonts.dart';
+import 'package:news/model/news_article.dart';
+import 'package:news/screens/list_news/new_list_view_model.dart'
+    show NewsProvider;
 import 'package:news/uitils/base_app_notifer.dart' show NotifierState;
 import 'package:provider/provider.dart';
 
-class NewsListScreen extends StatelessWidget {
-  static String route="NewsListScreen";
-  const NewsListScreen({super.key});
+class Article extends StatelessWidget {
+  static String route = "NewsListScreen";
+  final NewsArticle article;
+  const Article({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
-    final newsProvider = Provider.of<NewsProvider>(context);
-
-    if (newsProvider.state == NotifierState.loading) {
-      return Center(child: CircularProgressIndicator());
-    } else if (newsProvider.state == NotifierState.error) {
-      return Center(child: Text(newsProvider.errorMessage ?? 'Unknown error'));
-    } else if (newsProvider.state == NotifierState.loaded) {
-      return ListView.builder(
-        itemCount: newsProvider.articles.length,
-        itemBuilder: (context, index) {
-          final article = newsProvider.articles[index];
-          return ListTile(
-            title: Text(article.title),
-            subtitle: Text(article.description),
-          );
-        },
-      );
-    } else {
-      return Center(
-        child: ElevatedButton(
-          onPressed: () {
-            newsProvider.fetchNews(query: 'politics)');
-          },
-          child: Text('Load News'),
-        ),
-      );
-    }
+    return Card(
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              article.imageUrl,
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  article.title,
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  article.publishedAt,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

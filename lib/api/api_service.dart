@@ -18,6 +18,7 @@ class ApiService {
       }) async {
     try {
       Uri uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
+      print("URI $uri");
       final response = await http.get(uri, headers: headers ?? defaultHeaders);
       return _decodeResponse(response);
     } catch (e) {
