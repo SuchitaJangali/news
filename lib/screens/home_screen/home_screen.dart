@@ -115,7 +115,9 @@ class _NewsHomePageState extends State<NewsHomePage> {
                                 return;
                               }
                               FocusScope.of(context).unfocus();
-                              view.fetchNews(query: searchController.text);
+                              view.fetchNews(
+                                query: searchController.text,
+                              );
                             },
                           ),
                         ),
@@ -137,6 +139,7 @@ class _NewsHomePageState extends State<NewsHomePage> {
                               context
                                   .read<NewsProvider>()
                                   .fetchNews(query: query);
+                              searchController.clear();
                             },
                           ),
                           CategoryIcon(
@@ -148,6 +151,7 @@ class _NewsHomePageState extends State<NewsHomePage> {
                               context
                                   .read<NewsProvider>()
                                   .fetchNews(query: query);
+                              searchController.clear();
                             },
                           ),
                           CategoryIcon(
@@ -159,6 +163,7 @@ class _NewsHomePageState extends State<NewsHomePage> {
                               context
                                   .read<NewsProvider>()
                                   .fetchNews(query: query);
+                              searchController.clear();
                             },
                           ),
                           CategoryIcon(
@@ -170,6 +175,7 @@ class _NewsHomePageState extends State<NewsHomePage> {
                               context
                                   .read<NewsProvider>()
                                   .fetchNews(query: query);
+                              searchController.clear();
                             },
                           ),
                         ]),

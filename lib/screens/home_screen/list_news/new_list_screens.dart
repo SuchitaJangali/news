@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:news/model/news_article.dart';
 import 'package:news/screens/detail_news/detail_news_screen.dart';
 
@@ -33,9 +34,9 @@ class Article extends StatelessWidget {
                       height: 80,
                       width: 80,
                       fit: BoxFit.cover,
-                      imageUrl: article?.imageUrl ?? "",
+                      imageUrl: article.imageUrl ?? "",
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                          Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) =>
                           Icon(Icons.broken_image),
                     )),
@@ -53,7 +54,10 @@ class Article extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        article.publishedAt,
+                        DateTime.parse(article.publishedAt) == DateTime.now()
+                            ? "Today"
+                            : DateFormat('dd MMM yyyy')
+                                .format(DateTime.parse(article.publishedAt)),
                         style: GoogleFonts.poppins(
                           fontSize: 12,
                           color: Colors.grey,
