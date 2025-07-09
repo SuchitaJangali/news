@@ -200,7 +200,7 @@ void openInAppBrowser(String url) async {
   if (await canLaunchUrl(uri)) {
     await launchUrl(
       uri,
-      mode: LaunchMode.e, // Opens in in-app browser
+      mode: LaunchMode.inAppBrowserView, // Opens in in-app browser
     );
   } else {
     throw 'Could not launch $url';
