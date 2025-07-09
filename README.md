@@ -2,6 +2,10 @@
 
 New project
 
+```bash 
+ flutter build apk --release  --no-tree-shake-icons
+explorer "build\app\outputs\flutter-apk"
+```
 ## Getting Started
 
 This project is a starting point for a Flutter application.
